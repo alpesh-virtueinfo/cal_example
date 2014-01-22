@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html><head>
+		<style type="text/css">
+            #calendar {
+                line-height: 1;
+            }
+        </style>
+	</head>
+	<body style="cursor: auto;">
+	    <%= @users.count %>
+	    <% @users.each do |user| %>
+	        <%= user %>
+        <% end %>
+        <div class="fc" id="calendar">
+        <script type="text/javascript">
+            $(document).ready(function() {
+	           	usercount = <%= @users.count %>
+	           	//alert(usercount);
+	           	
+	           	            
+                var date = new Date();
+                var d = date.getDate();
+                var m = date.getMonth();
+                var y = date.getFullYear();
+		
+                var calendar = $("#calendar").fullCalendar({
+                    header: {
+                        left: "prev,next today",
+                        center: "title",
+                        right: "month,agendaWeek,agendaDay,resourceDay"
+                    },
+                    slotMinutes: 30,
+                    minTime: 10,
+                    maxTime: 20,
+                    firstDay: 1,
+                    titleFormat: "ddd, MMM dd, yyyy",
+                    defaultView: "resourceDay",
+                    selectable: true,
+                    selectHelper: true,
+                    select: function(start, end, allDay, event, resourceId) {
+                        var title = prompt("Event Title:");
+                        if (title) {
+                            console.log("@@ adding event " + title + ", start " + start + ", end " + end + ", allDay " + allDay + ", resource " + resourceId);
+                            calendar.fullCalendar("renderEvent",
+                            {
+                                title: title,
+                                start: start,
+                                end: end,
+                                allDay: allDay,
+                                resourceId: resourceId
+                            },
+                            true // make the event "stick"
+                        );
+                        }
+                        calendar.fullCalendar("unselect");
+                    },
+                    eventResize: function(event, dayDelta, minuteDelta) {
+                        console.log("@@ resize event " + event.title + ", start " + event.start + ", end " + event.end + ", resource " + event.resourceId);
+                    },
+                    eventDrop: function( event, dayDelta, minuteDelta, allDay) {
+                        console.log("@@ drag/drop event " + event.title + ", start " + event.start + ", end " + event.end + ", resource " + event.resourceId);
+                    },
+                    editable: true,
+                    resources: 'resorces_data.rb',/*[
+                        {
+                            name: "alpesh",
+                            id:	"resource1"
+                        },
+                    ],*/
+
+                    resources: [
+                        {
+                            name: "alpesh",
+                            id:	"resource1"
+                        },
+                        {
+                            name: "sanjay",
+                            id:	"resource2"
+                        },
+                        {
+                            name: "nitin",
+                            id:	"resource3"
+                        }
+                    ],
+                    events: [
+                        {
+                            title: "All Day Event 1",
+                            start: new Date(y, m, d - 1),
+                            end: new Date(y, m, d + 1),
+                            resourceId: "resource1"
+                        },
+                        {
+                            title: "Short Event 1",
+                            start: new Date(y, m, d, 8, 30),
+                            end: new Date(y, m, d, 9, 30),
+                            allDay: false,
+                            resourceId: "resource1"
+                        },
+                        {
+                            title: "Short Event 2",
+                            start: new Date(y, m, d + 1, 14, 00),
+                            end: new Date(y, m, d + 1, 15, 00),
+                            allDay: false,
+                            resourceId: "resource1"
+                        },
+                        {
+                            title: "All Day Event 2",
+                            start: new Date(y, m, d - 2),
+                            end: new Date(y, m, d - 1),
+                            resourceId: "resource2"
+                        },
+                        {
+                            title: "Lunch",
+                            start: new Date(y, m, d, 12, 0),
+                            end: new Date(y, m, d, 14, 0),
+                            allDay: false,
+                            resourceId: "resource2"
+                        },
+                        {
+                            title: "All Day Event 3",
+                            start: new Date(y, m, d),
+                            resourceId: "resource3"
+                        },
+                        {
+                            title: "Click for Google",
+                            start: new Date(y, m, d, 16, 0),
+                            end: new Date(y, m, d, 18, 30),
+                            allDay: false,
+                            url: "http://google.com/",
+                            resourceId: "resource3"
+                        }
+                    ]
+                });
+		
+            });
+
+        </script>
+		<script type="text/javascript">
+		var _gaq = _gaq || [];
+		  _gaq.push(["_setAccount", "UA-39443744-1"]);
+			_gaq.push(["_trackPageview"]);
+
+			(function() {
+		  var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
+		  ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+		 var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
+		})();
+		</script>
+  
+
+</body></html>
+
